@@ -8,24 +8,77 @@
 </head>
 <body>
   <nav>
-    <img src="icons8-broccoli-icon.png">
+    <img src="icons8-broccoli-icon.png" alt="Broccoli Icon">
   </nav>
-<body>
   <main>
     <section>
-      <input type="text" placeholder="Search" autofocus>
+      <input type="text" id="search-query" placeholder="Search" autofocus>
     </section>
-    <form>
-      <input type="radio" checked name="search-engine" id="brave"><label for="brave" title="Brave - slower. AI Summary and privacy-focused.">more privacy</label>
+    <form id="search-form">
+      <input type="radio" checked name="search-engine" value="brave" id="brave">
+      <label for="brave" title="Brave - slower. AI Summary and privacy-focused.">more privacy</label>
       <div style="width: 24px;"></div>
-      <input type="radio" name="search-engine" id="google"><label for="google" title="Google - personalized ads, weaker privacy. Fast and reliable.">better results</label>
+      <input type="radio" name="search-engine" value="google" id="google">
+      <label for="google" title="Google - personalized ads, weaker privacy. Fast and reliable.">better results</label>
+      <!-- Hidden submit button for Enter key support -->
+      <button type="submit" style="display: none;"></button>
     </form>
   </main>
   <footer>
-    <a class="link" href="https://youtube.com"><img src="icons8-youtube.svg" alt="Youtube" title="YouTube"></div>
-    <a class="link" href="https://gigachat.ddns.net"><img src="icons8-message.png" alt="gigaChat Link" style="height: 3.5rem; margin-top: 4px;" title="gigaChat - messaging application"></div>
-    <a class="link" href="https://gigadrive.ddns.net"><img src="icons8-cloud.png" alt="gigaDrive Link" title="gigaDrive - free cloud storage"></div>
+    <a class="link" href="https://youtube.com">
+      <img src="icons8-youtube.svg" alt="YouTube" title="YouTube">
+    </a>
+    <a class="link" href="https://gigachat.ddns.net">
+      <img src="icons8-message.png" alt="gigaChat Link" style="height: 3.5rem; margin-top: 4px;" title="gigaChat - messaging application">
+    </a>
+    <a class="link" href="https://gigadrive.ddns.net">
+      <img src="icons8-cloud.png" alt="gigaDrive Link" title="gigaDrive - free cloud storage">
+    </a>
   </footer>
+  
+  <!-- JavaScript -->
+  <script>
+    // Log search engine selection
+    const radioButtons = document.querySelectorAll('input[name="search-engine"]');
+    radioButtons.forEach(radio => {
+      radio.addEventListener('change', () => {
+        console.log(`Search engine selected: ${radio.value}`);
+      });
+    });
+
+    // Log typing in the search box
+    const searchBox = document.getElementById('search-query');
+    searchBox.addEventListener('input', (event) => {
+      console.log(`Search box updated: ${event.target.value}`);
+    });
+
+    // Handle form submission
+    document.getElementById('search-form').addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent the default form submission
+
+      const query = searchBox.value.trim();
+      console.log(`Search query submitted: "${query}"`);
+
+      if (!query) {
+        console.log('No search term entered.');
+        alert('Please enter a search term.');
+        return;
+      }
+
+      const selectedEngine = document.querySelector('input[name="search-engine"]:checked').value;
+      console.log(`Selected search engine: ${selectedEngine}`);
+
+      let searchUrl = '';
+      if (selectedEngine === 'brave') {
+        searchUrl = `https://search.brave.com/search?q=${encodeURIComponent(query)}`;
+      } else if (selectedEngine === 'google') {
+        searchUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+      }
+
+      console.log(`Redirecting to: ${searchUrl}`);
+      window.location.href = searchUrl; // Redirect to the URL
+    });
+  </script>
 </body>
 <!-- Graphics by icons8 (icons8.com) -->
 </html>
