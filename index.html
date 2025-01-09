@@ -36,7 +36,6 @@
     </a>
   </footer>
   
-  <!-- JavaScript -->
   <script>
     // Log search engine selection
     const radioButtons = document.querySelectorAll('input[name="search-engine"]');
@@ -65,10 +64,10 @@
         return;
       }
   
-      const isUrl = isValidUrl(query);
+      const isDomain = isValidDomain(query);
   
-      if (isUrl) {
-        console.log(`Valid URL detected: ${query}`);
+      if (isDomain) {
+        console.log(`Valid domain detected: ${query}`);
         const url = query.startsWith('http') ? query : `https://${query}`;
         console.log(`Redirecting to: ${url}`);
         window.location.href = url; // Redirect to the URL
@@ -102,16 +101,14 @@
       }
     });
   
-    // URL Validation Helper
-    function isValidUrl(string) {
-      try {
-        const url = new URL(string.startsWith('http') ? string : `https://${string}`);
-        return true;
-      } catch (e) {
-        return false;
-      }
+    // Domain Validation Helper
+    function isValidDomain(string) {
+      // Regular expression to match valid domain names
+      const domainPattern = /^[a-zA-Z0-9-]+(\.[a-zA-Z]{2,})+$/;
+      return domainPattern.test(string);
     }
   </script>
+  
   
 </body>
 <!-- Graphics by icons8 (icons8.com) -->
