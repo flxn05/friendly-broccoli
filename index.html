@@ -80,10 +80,17 @@
       window.location.href = searchUrl; // Redirect to the URL
     });
 
-    // Additional logging for debugging
+    // Debugging Enter Key Behavior
     document.addEventListener('keydown', (event) => {
       if (event.key === 'Enter') {
         console.log('Enter key pressed.');
+        const form = document.getElementById('search-form');
+        if (form) {
+          console.log('Triggering form submit programmatically.');
+          form.requestSubmit(); // Manually trigger the submit event
+        } else {
+          console.error('Form not found!');
+        }
       }
     });
   </script>
