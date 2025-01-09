@@ -12,7 +12,7 @@
   </nav>
   <main>
     <section>
-      <input type="text" id="search-query" placeholder="Search" autofocus>
+      <input type="text" id="search-query" placeholder="Type to search or enter link" autofocus>
     </section>
     <form id="search-form">
       <input type="radio" checked name="search-engine" value="brave" id="brave">
@@ -45,40 +45,49 @@
         console.log(`Search engine selected: ${radio.value}`);
       });
     });
-
+  
     // Log typing in the search box
     const searchBox = document.getElementById('search-query');
     searchBox.addEventListener('input', (event) => {
       console.log(`Search box updated: ${event.target.value}`);
     });
-
+  
     // Handle form submission
     document.getElementById('search-form').addEventListener('submit', function(event) {
       event.preventDefault(); // Prevent the default form submission
-
+  
       const query = searchBox.value.trim();
       console.log(`Search query submitted: "${query}"`);
-
+  
       if (!query) {
         console.log('No search term entered.');
         alert('Please enter a search term.');
         return;
       }
-
-      const selectedEngine = document.querySelector('input[name="search-engine"]:checked').value;
-      console.log(`Selected search engine: ${selectedEngine}`);
-
-      let searchUrl = '';
-      if (selectedEngine === 'brave') {
-        searchUrl = `https://search.brave.com/search?q=${encodeURIComponent(query)}`;
-      } else if (selectedEngine === 'google') {
-        searchUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+  
+      const isUrl = isValidUrl(query);
+  
+      if (isUrl) {
+        console.log(`Valid URL detected: ${query}`);
+        const url = query.startsWith('http') ? query : `https://${query}`;
+        console.log(`Redirecting to: ${url}`);
+        window.location.href = url; // Redirect to the URL
+      } else {
+        const selectedEngine = document.querySelector('input[name="search-engine"]:checked').value;
+        console.log(`Selected search engine: ${selectedEngine}`);
+  
+        let searchUrl = '';
+        if (selectedEngine === 'brave') {
+          searchUrl = `https://search.brave.com/search?q=${encodeURIComponent(query)}`;
+        } else if (selectedEngine === 'google') {
+          searchUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+        }
+  
+        console.log(`Redirecting to: ${searchUrl}`);
+        window.location.href = searchUrl; // Redirect to the URL
       }
-
-      console.log(`Redirecting to: ${searchUrl}`);
-      window.location.href = searchUrl; // Redirect to the URL
     });
-
+  
     // Debugging Enter Key Behavior
     document.addEventListener('keydown', (event) => {
       if (event.key === 'Enter') {
@@ -92,7 +101,18 @@
         }
       }
     });
+  
+    // URL Validation Helper
+    function isValidUrl(string) {
+      try {
+        const url = new URL(string.startsWith('http') ? string : `https://${string}`);
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
   </script>
+  
 </body>
 <!-- Graphics by icons8 (icons8.com) -->
 </html>
